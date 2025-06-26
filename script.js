@@ -11,6 +11,8 @@ export default function () {
   let request = http.get(url);
   check(request, {
     OK: (r) => r.status === 200,
+    'status es 200': (r) => r.status === 200,
+    'respuesta < 2s': (r) => r.timings.duration < 2000,
   });
   sleep(SLEEP_DURATION);
 }
