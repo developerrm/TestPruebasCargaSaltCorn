@@ -13,8 +13,9 @@ jobs:
 
       - name: Instalar K6
         run: |
-          sudo apt update
-          sudo apt install -y k6 jq
+           sudo apt update
+           sudo apt install -y jq
+           sudo snap install k6
 
       - name: Ejecutar prueba de carga
         run: |
