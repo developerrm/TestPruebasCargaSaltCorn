@@ -3,7 +3,7 @@ name: Prueba de carga con K6
 on:
   push:
     branches:
-      - main
+      - master
  
 jobs:
   test:
