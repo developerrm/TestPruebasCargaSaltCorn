@@ -1,0 +1,32 @@
+name: Prueba de carga con K6
+
+on:
+  push:
+    branches:
+      - main
+ 
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Instalar K6
+        run: |
+          sudo apt update
+          sudo apt install -y k6 jq
+
+      - name: Ejecutar prueba de carga
+        run: |
+          k6 run --vus 5 --duration 1s script.js --summary-export=resultados.json
+
+      - name: Validar tiempo promedio
+        run: |
+          avg=$(jq '.metrics.http_req_duration.avg' resultados.json)
+          echo "Promedio de respuesta: $avg ms"
+          if (( $(echo "$avg > 2000" | bc -l) )); then
+            echo "⚠️ Tiempo promedio mayor a 2 segundos. Falla la prueba."
+            exit 1
+          else
+            echo "✅ Tiempo promedio dentro del límite."
+          fi
